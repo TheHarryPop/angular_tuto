@@ -1,15 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FaceSnap } from '../models/face-snaps';
+import { FaceSnapsService } from '../services/face-snaps.service';
 import {
   CurrencyPipe,
   DatePipe,
   DecimalPipe,
-  LowerCasePipe,
+  // LowerCasePipe,
   NgClass,
   NgStyle,
   PercentPipe,
   TitleCasePipe,
-  UpperCasePipe
+  // UpperCasePipe
 } from '@angular/common';
 
 @Component({
@@ -17,8 +18,8 @@ import {
   imports: [
     NgStyle,
     NgClass,
-    UpperCasePipe,
-    LowerCasePipe,
+    // UpperCasePipe,
+    // LowerCasePipe,
     TitleCasePipe,
     DatePipe,
     DecimalPipe,
@@ -37,6 +38,9 @@ export class FaceSnapComponent implements OnInit{
   myPourcent: number = 0.3367;
   myPrice: number = 336.75;
 
+  constructor(private faceSnapsService: FaceSnapsService) {
+  }
+
   ngOnInit(): void{
     this.snapButtonText = "Like";
     this.alreadyLike = false;
@@ -51,14 +55,14 @@ export class FaceSnapComponent implements OnInit{
   }
 
   Like() {
-      this.faceSnap.addLike();
+      this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'like')
       this.alreadyLike = true;
       this.snapButtonText = "Unlike";
     }
 
   unLike() {
-      this.faceSnap.removeLike();
-      this.alreadyLike = false;
+    this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'unlike')
+    this.alreadyLike = false;
       this.snapButtonText = "Like";
     }
 
