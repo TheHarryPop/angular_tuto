@@ -1,21 +1,5 @@
-<div class="face-snap-card" [ngClass]="{snapped : alreadyLike}">
-<!-- number 1.0-0 = 1 chiffre minimum avant la virgule, 0 chiffre minimum après la virgule - 0 chiffre maximum après la virgule  -->
-  <h1>{{myLargeNumber | number: "1.0-0" }}</h1>
-  <h1>{{myPourcent | percent: "1.0-2" }}</h1>
-<!--  code sert à afficher en toute lettre la monnaie-->
-  <h1>{{myPrice | currency: 'EUR' : "code" : "1.0-0" }}</h1>
+<div class="face-snap-card">
   <h2>{{faceSnap.title | titlecase}}</h2>
-  @if (faceSnap.location) {
-    <p>{{faceSnap.location}}</p>
-  } @else {
-    <p>Localisation non spécifiée</p>
-  }
-  <img [src]="faceSnap.imageUrl" [alt]="faceSnap.title">
-  <p>{{faceSnap.description}}</p>
-  <p>FaceSnap créé le {{faceSnap.createdAt | date: "d MMMM YYYY, à HH:mm "}}</p>
-  <p>
-    <button (click)="onLike()"> {{ snapButtonText }} </button>
-    <span [ngStyle]="{color: 'rgb(0, ' + faceSnap.likes + ',0)'}"> {{faceSnap.likes}} </span>
-  </p>
+  <button (click)="onViewFaceSnap()">View</button>
 </div>
 
