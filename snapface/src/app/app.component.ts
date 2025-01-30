@@ -18,6 +18,19 @@ import {AsyncPipe} from '@angular/common';
  /*
 Explications notion "Observable"
 Un observable est un évènement dans le code
+La convention pour nommer un observable est d'ajouter un $ à la fin de la variable dans le AppComponent implements OnInit
+  → interval$!: Observable<"son type">;
+
+Pour récupérer la valeur de l'observable, il faut y souscrire avec ".subscribe()" => Mais cette méthode est à proscrire /!\ !
+Il est d'usage d'utiliser la méthode ".pipe()" pour pouvoir ajouter ensuite des opérateurs "bas niveau" :
+
+Pour transformer les émissions de l'observable → map() (opérateur bas niveau)
+  → this.interval$ = interval(1000).pipe(map(value => value * 10));
+Pour filter (et forcément impacter son retour -> filter() (opérateur bas niveau)
+  → this.interval$ = interval(1000).pipe(filter (value => value % 3 === 0));
+Pour récupérer sans transformer les émissions (appelé effet secondaire) de l'observable →  tap() (opérateur bas niveau)
+  → this.interval$ = interval(1000).pipe(tap(value → console.log(`Log observable ${value}`));
+
 L'élément qui va déclencher l'exécution de l'observable s'appelle "l'observable extérieur"
                                                                                         ______
 Le déclenchement de cet observable est une souscription                                      |
@@ -27,7 +40,7 @@ Quand l'exécution de l'observable est terminée, on dit que l'observable est co
 Stratégie parallèle (-- mergeMap --) : Les observables intérieurs sont déclenchés en parallèle sans contrôler que le précédent soit terminé
 Stratégie en série (-- concatMap --) : Les observables intérieurs sont déclenchés en série en contrôlant que le précédent soit terminé
 Stratégie "ignorer" (-- exhaustMap --) : Les observables intérieurs ne prennent pas en compte les observables extérieurs tout pendant que l'actuel n'est pas terminé (ils seront ignorés)
-Stratégie "annulation" (-- switchMap --) : Si un observable extérieur est déclenché pendant l'exécution d'un observable intérieur, l'observable en cours d'exécution sera annulé et un nouvel observable intérieur sera lancé
+Stratégie "annulation" (-- switchMap --) : Si un observable extérieur est déclenché durant l'exécution d'un observable intérieur, l'observable en cours d'exécution sera annulé et un nouvel observable intérieur sera lancé
 */
 
 export class AppComponent implements OnInit {
@@ -36,7 +49,6 @@ export class AppComponent implements OnInit {
   yellowTrainsCalled = 0;
 
   ngOnInit() {
-    // @ts-ignore
     interval(500).pipe(
       take(10),
       // map permet de transformer les émissions d'un observable
