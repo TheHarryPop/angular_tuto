@@ -41,6 +41,8 @@ Stratégie parallèle (-- mergeMap --) : Les observables intérieurs sont décle
 Stratégie en série (-- concatMap --) : Les observables intérieurs sont déclenchés en série en contrôlant que le précédent soit terminé
 Stratégie "ignorer" (-- exhaustMap --) : Les observables intérieurs ne prennent pas en compte les observables extérieurs tout pendant que l'actuel n'est pas terminé (ils seront ignorés)
 Stratégie "annulation" (-- switchMap --) : Si un observable extérieur est déclenché durant l'exécution d'un observable intérieur, l'observable en cours d'exécution sera annulé et un nouvel observable intérieur sera lancé
+
+Attention, il faut toujours veiller à "compléter" un observable pour éviter les fuites de données. Voir le fichier : face-snap-list.component.ts
 */
 
 export class AppComponent implements OnInit {
