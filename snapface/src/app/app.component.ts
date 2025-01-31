@@ -4,6 +4,7 @@ import {RouterOutlet} from '@angular/router';
 import {filter, interval, of, Observable} from 'rxjs';
 import {concatMap,mergeMap, delay, exhaustMap, map,switchMap, take, tap} from 'rxjs/operators';
 import {AsyncPipe} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import {AsyncPipe} from '@angular/common';
     HeaderComponent,
     RouterOutlet,
     AsyncPipe,
+    FormsModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

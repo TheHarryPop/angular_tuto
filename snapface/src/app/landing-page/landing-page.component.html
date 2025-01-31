@@ -1,0 +1,27 @@
+<div class="landing-block">
+
+<!-------------------- Formulaire avec les Templates Forms (suffisant pour formulaires simple)------------------------->
+<!--  Le formulaire ci dessous renverra toutes les valeurs du formulaire sous forme de dictionnaire
+      Attention de ne pas oublier le "name" (userEmail ici) pour donner un nom de clé à la valeur -->
+  <form #emailForm="ngForm" (ngSubmit)="onSubmitForm(emailForm)">
+    <label for="emailInput">Inscrivez vous pour recevoir notre newsletter !</label>
+    <input type="email" id="emailInput" [(ngModel)]="userEmail" name="userEmail">
+    <button type="submit">Ok !</button>
+  </form>
+
+
+<!--  Le formulaire ci dessous ne renverra qu'une seule valeur -->
+
+<!--  <form (ngSubmit)="onSubmitForm()">-->
+<!--    <label for="emailInput">Inscrivez vous pour recevoir notre newsletter !</label>-->
+<!--    <input type="email" id="emailInput" [(ngModel)]="userEmail" name="userEmail">-->
+<!--    <button type="submit">Ok !</button>-->
+<!--  </form>-->
+
+<!--/!\/!\/!\/!\/!\/!\-- Fin Formulaire avec les Templates Forms (suffisant pour formulaires simple)--/!\/!\/!\/!\/!\-->
+
+  <img src="assets/snapface-logo.png" alt="Snapface logo">
+  <div class="landing-links">
+    <button (click)="onContinue()">Continuer vers SnapFace</button>
+  </div>
+</div>
