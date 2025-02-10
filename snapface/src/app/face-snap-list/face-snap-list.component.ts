@@ -2,8 +2,9 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FaceSnap} from '../models/face-snaps';
 import {FaceSnapComponent} from '../face-snap/face-snap.component';
 import {FaceSnapsService} from '../services/face-snaps.service';
-import {interval, Subject, takeUntil} from 'rxjs';
+import {interval, Observable, Subject, takeUntil} from 'rxjs';
 import {take, tap} from 'rxjs/operators';
+import {AsyncPipe, NgForOf} from '@angular/common';
 
 /*
 Deux manières de détruire un observable pour éviter les fuites de mémoire :
@@ -15,13 +16,18 @@ Deux manières de détruire un observable pour éviter les fuites de mémoire :
 @Component({
   selector: 'app-face-snap-list',
   imports: [
-    FaceSnapComponent
+    FaceSnapComponent,
+    NgForOf,
+    AsyncPipe,
   ],
   templateUrl: './face-snap-list.component.html',
   styleUrl: './face-snap-list.component.scss'
 })
 export class FaceSnapListComponent implements OnInit, OnDestroy {
   faceSnaps!: FaceSnap[];
+
+  faceSnaps$!: Observable<FaceSnap[]>;
+
   private destroy$!: Subject<boolean>;
 
   constructor(private faceSnapsService: FaceSnapsService) {}
@@ -29,7 +35,7 @@ export class FaceSnapListComponent implements OnInit, OnDestroy {
   // Évènement qui concerne l'initialisation du composant (ouverture de la page)
   ngOnInit(): void {
 
-    this.faceSnaps = this.faceSnapsService.getFaceSnaps()
+    this.faceSnaps$ = this.faceSnapsService.getFaceSnaps()
     this.destroy$ = new Subject<boolean>();
 
     interval(1000).pipe(

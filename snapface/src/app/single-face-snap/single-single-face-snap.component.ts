@@ -2,17 +2,20 @@ import { Component, OnInit} from '@angular/core';
 import { FaceSnap } from '../models/face-snaps';
 import { FaceSnapsService } from '../services/face-snaps.service';
 import {
+  AsyncPipe,
   CurrencyPipe,
   DatePipe,
   DecimalPipe,
   // LowerCasePipe,
-  NgClass,
+  NgClass, NgIf,
   NgStyle,
   PercentPipe,
   TitleCasePipe,
   // UpperCasePipe
 } from '@angular/common';
 import {ActivatedRoute, RouterLink} from '@angular/router';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
   selector: 'app-single-face-snap',
@@ -26,13 +29,16 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
     DecimalPipe,
     PercentPipe,
     CurrencyPipe,
-    RouterLink
+    RouterLink,
+    AsyncPipe,
+    NgIf
   ],
   templateUrl: './single-single-face-snap.component.html',
   styleUrl: './single-single-face-snap.component.scss'
 })
 export class SingleSingleFaceSnapComponent implements OnInit{
-  faceSnap !: FaceSnap;
+  // faceSnap!: FaceSnap;
+  faceSnap$!: Observable<FaceSnap>;
   snapButtonText!: string;
   alreadyLike!: boolean;
   myLargeNumber: number = 45581445647.7656;
@@ -48,25 +54,18 @@ export class SingleSingleFaceSnapComponent implements OnInit{
   }
 
 
-  onLike() {
-    if (this.alreadyLike) {
-      this.unLike();
+  onLike(faceSnapId: number) {
+    if (this.snapButtonText === 'Like') {
+      this.faceSnap$ = this.faceSnapsService.snapFaceSnapById(faceSnapId, 'like').pipe(
+        tap(() => this.snapButtonText = "Unlike"))
+        this.alreadyLike = true
     } else {
-      this.Like();
+      this.faceSnap$ = this.faceSnapsService.snapFaceSnapById(faceSnapId, 'unlike').pipe(
+        tap(() => this.snapButtonText = "Like"))
+        this.alreadyLike = false
     }
   }
 
-  Like() {
-      this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'like')
-      this.alreadyLike = true;
-      this.snapButtonText = "Unlike";
-    }
-
-  unLike() {
-    this.faceSnapsService.snapFaceSnapById(this.faceSnap.id, 'unlike')
-    this.alreadyLike = false;
-      this.snapButtonText = "Like";
-    }
 
   private prepareInterface() {
     this.snapButtonText = "Like";
@@ -75,6 +74,6 @@ export class SingleSingleFaceSnapComponent implements OnInit{
 
   private getFaceSnap() {
     const faceSnapId = this.route.snapshot.params['id'];
-    this.faceSnap = this.faceSnapsService.getFaceSnapById(faceSnapId)
+    this.faceSnap$ = this.faceSnapsService.getFaceSnapById(faceSnapId)
   }
 }
