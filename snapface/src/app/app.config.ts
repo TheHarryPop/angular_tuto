@@ -9,10 +9,10 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    {provide: LOCALE_ID, useValue: 'fr-FR'},
     //ligne pour importer la nouvelle manière de faire appelle à HttpClient
     provideHttpClient(withInterceptorsFromDi()),
-    //ligne pour ajouter les interceptor pour le token
+    //ligne pour les tokens
     httpInterceptorProviders,
+    {provide: LOCALE_ID, useValue: 'fr-FR'}
   ]
 };
